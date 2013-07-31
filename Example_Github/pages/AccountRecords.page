@@ -1,0 +1,9 @@
+<apex:page Controller="MyExtension">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:outputLabel value="Name"/>
+            <apex:inputText value="{!name}"/>
+            <apex:commandButton value="Redirect" action="{!redirect}"/>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

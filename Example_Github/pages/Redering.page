@@ -1,0 +1,17 @@
+<apex:page controller="RenderedExample">
+	<apex:form >
+		<apex:pageBlock id="pBlock">
+			<apex:pageBlockSection columns="1" id="section1" rendered="{!showSection1}">
+				<apex:outputLabel value="PageBlockSection1"/>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection columns="1" id="section2" rendered="{!showSection2}">
+				<apex:outputLabel value="PageBlockSection2"/>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection columns="1"  id="section3" rendered="{!showSection3}">
+				<apex:outputLabel value="PageBlockSection3"/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		<apex:commandButton value="Button1" action="{!method1}" reRender="pBlock"/>
+		<apex:commandButton value="Button2" action="{!method2}" reRender="pBlock"/>
+	</apex:form>
+</apex:page>

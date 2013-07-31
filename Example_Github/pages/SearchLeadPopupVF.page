@@ -1,0 +1,105 @@
+<apex:page standardController="lead" showHeader="true" extensions="SearchLeadPopUp">
+	<apex:form >
+		<style type="text/css">
+			.customPopup {
+		    	background-color: white;
+		    	border-style: solid;
+		    	border-width: 2px;
+		    	left: 20%;
+		    	padding: 10px;
+		    	position: absolute;
+		    	z-index: 9999;
+			        /* 
+			        These are the 3 css properties you will need to tweak so the pop 
+			        up displays in the center of the screen. First set the width. Then set 
+			        margin-left to negative half of what the width is. You can also add 
+			        the height property for a fixed size pop up.
+			        */
+		    	width: 500px;
+		    	top: 20%;
+			}
+		
+			.disabledTextBox {
+			    background-color: white;
+		    	border: 1px solid;
+		    	color: black;
+		    	cursor: default;
+		    	width: 90px;
+		    	display: table;
+		    	padding: 2px 1px;
+		    	text-align:right;
+			}   
+		
+			.closeButton {
+			    float: right;
+			}
+		</style>
+		
+		<apex:pageBlock id="inputBlock">
+			<apex:pageBlockSection columns="1">
+				<apex:pageBlockSectionItem > 
+					<apex:outputLabel value="FirstName"/>
+					<apex:outputPanel styleClass="requiredInput" layout="block" >
+						<apex:outputPanel styleClass="requiredBlock" layout="block"/>
+						<apex:inputText id="fnameId" value="{!firstName}"/>
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>
+				
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="LastName"/>
+					<apex:outputPanel styleClass="requiredInput" layout="block">
+						<apex:outputPanel styleClass="requiredBlock" layout="block"/>
+						<apex:inputText id="lnameId" value="{!lastName}"/>
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>
+				
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Phone"/>
+					<apex:inputText id="phoneId" value="{!phone}"/>
+				</apex:pageBlockSectionItem>
+				
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Email"/>
+					<apex:inputText id="emailId" value="{!email}"/>
+				</apex:pageBlockSectionItem>
+			  
+				<apex:pageBlockSectionItem >	
+					<apex:outputLabel value="Zipcode"/>
+					<apex:inputText id="zipId" value="{!zipcode}"/>
+				</apex:pageBlockSectionItem>
+				 
+			</apex:pageBlockSection>
+			<apex:commandButton style="margin-left:180px" id="searchleadId" value="SearchLead" action="{!searchLead}" reRender="resultsBlock,inputBlock"/>
+			<apex:commandButton id="createLeadId" value="CreateLead" action="{!createLead}" rendered="{!showCreateLead}"/>
+			<apex:commandButton id="resetid" value="Reset" action="{!reset}"/>
+		</apex:pageBlock>
+		 
+		<apex:pageBlock id="resultsBlock">
+			<apex:outputPanel rendered="{!showCreateLead}">No leads found. Create a new lead by clicking on CreateLead button.</apex:outputPanel>
+			<apex:outputPanel rendered="{!showSearchLead}">New Lead has been created. Click on SearchLead button to see the created lead</apex:outputPanel>
+				<apex:pageBlockTable value="{!leadList}" var="item" rendered="{!showResults}">
+					<apex:column headerValue="FirstName">					
+						<apex:commandLink action="{!showPopupWindow}" value="{!item.FirstName}" >
+							<apex:param value="{!item.Id}" name="Id" assignTo="{!selectedLeadId}"/>
+						</apex:commandLink>
+					</apex:column>
+					<apex:column value="{!item.LastName}"/>
+					<apex:column value="{!item.Company}"/> 
+					<apex:column value="{!item.Zipcode__c}"/>
+				</apex:pageBlockTable>
+		</apex:pageBlock>
+		
+		<apex:pageBlock id="popupBlock" rendered="{!showPopup}">
+			<apex:outputPanel >
+				<apex:outputPanel styleClass="customPopup" layout="block">
+					<apex:commandButton styleClass="closeButton" value="X" action="{!redirectPopup}"/>
+					<apex:pageBlockSection >
+						<apex:outputPanel >You are attempting to open a lead. Click OK to continue.</apex:outputPanel>
+					</apex:pageBlockSection>
+					<apex:commandButton style="margin-left:200px" value="OK" action="{!leadDetailPage}"/>
+				</apex:outputPanel>
+			</apex:outputPanel>
+		</apex:pageBlock>
+		
+	</apex:form>
+</apex:page>
